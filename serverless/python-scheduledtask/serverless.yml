@@ -1,0 +1,30 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: nu1lspaxe
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: test
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: python-scheduledtask
+
+provider:
+  name: aws
+  runtime: python3.12
+  stage: ${opt:stage, 'local'}
+  region: us-east-1
+  profile: localstack
+
+functions:
+  rateHandler:
+    handler: handler.run
+    events:
+      - schedule: rate(1 minute)
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+    edgePort: 4566
+    autostart: false
