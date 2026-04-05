@@ -1,0 +1,31 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: nu1lspaxe
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: test
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: python-httpapi
+
+provider:
+  name: aws
+  runtime: python3.12
+  # Uncomment to easily set up a custom domain. Read the docs for more details:
+  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
+  # domain: api.example.com
+  stage: ${opt:stage, 'local'}
+  region: us-east-1
+  profile: localstack
+
+functions:
+  hello:
+    handler: handler.hello
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+    edgePort: 4566
+    autostart: false
